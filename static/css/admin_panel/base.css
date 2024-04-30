@@ -1,0 +1,41 @@
+#burger {
+  display: none;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+#burger .icon {
+  width: 24px;
+  height: 24px;
+}
+
+@media (max-width: 1000px) {
+  #burger {
+    display: flex;
+  }
+
+  .header__content--nav {
+    display: none;
+    position: absolute;
+    flex-direction: column;
+    align-items: center;
+    top: var(--header-height);
+    left: 0;
+    width: 100%;
+    height: calc(100vh - var(--header-height));
+    background: var(--background-color);
+  }
+
+  .header__content--nav.showen {
+    display: flex;
+  }
+}
+
+.header__content {
+  display: flex;
+  align-items: center;
+}

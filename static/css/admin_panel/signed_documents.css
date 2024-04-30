@@ -1,0 +1,27 @@
+.documents-table__wrapper {
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.documents-table {
+  margin-top: 10px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* table header */
+.documents-table tr th {
+  padding: 10px;
+  border: 1px solid black;
+  font-weight: 600;
+  background: var(--primary-color);
+  color: white;
+  white-space: nowrap;
+}
+
+/* table cells */
+.documents-table tr td {
+  padding: 10px;
+  border: 1px solid black;
+  white-space: nowrap;
+}

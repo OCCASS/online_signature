@@ -1,0 +1,55 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/admin_panel/base.css' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <title>{% block title %} {% endblock %}</title>
+    {% block head %}
+    {% endblock %}
+  </head>
+  <body>
+      <header class="header">
+          <div class="wrapper">
+              <div class="header__content">
+                  <a href="{% url 'admin_panel_index' %}">Admin</a>
+                  {% if user.is_authenticated %}
+                      <nav id="header-nav" class="header__content--nav">
+                          <a href="{% url 'admin_panel_create_document' %}">Создать документ</a>
+                          <a href="{% url 'admin_panel_documents' %}">Документы</a>
+                          <a href="{% url 'admin_panel_signed_documents' %}">Подписанные документы</a>
+                          <a href="{% url 'admin_panel_create_document_signing_requset' %}">Отправить документ на подпись</a>
+                          <a href="{% url 'admin_panel_logout' %}">Выйти</a>
+                      </nav>
+                      <button id="burger">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                           </svg>
+                       </button>
+                  {% endif %}
+              </div>
+          </div>
+      </header>
+      <div class="wrapper">
+          {% block content %}
+          {% endblock %}
+      </div>
+  </body>
+  <script>
+      document.addEventListener("DOMContentLoaded", () => {
+          const burger = document.getElementById("burger")
+          burger.addEventListener("click", (e) => {
+              document.getElementById("header-nav").classList.toggle("showen")
+          })
+      })
+  </script>
+  {% block under_body %}
+  {% endblock %}
+</html>

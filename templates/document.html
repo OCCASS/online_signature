@@ -1,0 +1,108 @@
+{% extends "base.html" %} 
+{% load static %} 
+
+{% block title %}Подпись документа{% endblock %} 
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/document.css' %}" />
+{% endblock %}
+
+{% block content %}
+    {% if document.signed %}
+        <h1>Документ успешно подписан</h1>
+        <p>
+            Докумнет был успешно подписан кодом 
+            <b>
+                {{ document.confirmation_code }}
+            </b> с телефона 
+            <b>
+                {{ document.formatted_phone_number }}
+            </b>
+        </p>
+        <p>
+            Подписанный договор доступен 
+            <a href="{{ document.document_file.url }}" target="_blank" rel="noopener noreferrer">по ссылке</a>
+        </p>
+    {% else %}
+        <h1>Документы от {{ document.created_at|date:"d.m.Y" }}</h1>
+        <div class="section">
+            <div class="section__header">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#29bf08" class="section__icon">
+                  <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
+                </svg>
+                <h2 class="section__title">Согласие на электронную подпись</h2>
+            </div>
+            <p>Номер телефона: {{ document.formatted_phone_number }}</p>
+        </div>
+        <div class="section">
+            <div class="section__header">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#dedede" class="section__icon">
+                  <path fill-rule="evenodd" d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0 0 16.5 9h-1.875a1.875 1.875 0 0 1-1.875-1.875V5.25A3.75 3.75 0 0 0 9 1.5H5.625ZM7.5 15a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 7.5 15Zm.75 2.25a.75.75 0 0 0 0 1.5H12a.75.75 0 0 0 0-1.5H8.25Z" clip-rule="evenodd" />
+                  <path d="M12.971 1.816A5.23 5.23 0 0 1 14.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 0 1 3.434 1.279 9.768 9.768 0 0 0-6.963-6.963Z" />
+                </svg>
+                <h2 class="section__title">
+                    <a href="{{ document.document_file.url }}" target="_blank" rel="noopener noreferrer">
+                        {{ document.document.name }}
+                    </a>
+                </h2>
+            </div>
+            <p style="padding-bottom: 10px">Ожидает вашей подписи</p>
+            <a href="{{ document.document_file.url }}" target="_blank" rel="noopener noreferrer" role="button">Открыть доукмент</a>
+        </div>
+        <div class="section">
+            <div class="section__header">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#dedede" class="section__icon">
+                  <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z" clip-rule="evenodd" />
+                </svg>
+                <h2 class="section__title">Код из СМС</h2>
+            </div>
+            <form method="POST" class="form">
+              {% csrf_token %} 
+              <p class="form__row {% if form.confirmation_code.errors %}form__row--error{% endif %}">
+                <input type="text" name="confirmation_code" placeholder="Код из СМС" class="form__input" maxlength="8" required="" id="id_confirmation_code" />
+                  {% if form.confirmation_code.errors %}
+                      <span class="form__error">{{ form.confirmation_code.errors|striptags }}</span>
+                  {% endif %}
+                  <a id="resend" disabled href="#" class="resend_code">
+                      Отправить снова <span id="resend_from">через <span id="resend_from_timer"></span></span>
+                  </a>
+              </p>
+              <div class="form__footer">
+                  <p class="form__footer--description">Заполняя форму, я принимаю условия обработки персональных данных</p>
+                  <button type="submit">Подписать</button>
+              </div>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block under_body %}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const resendSMSFrom = new Date(`{{ document.resend_sms_from.isoformat }}`).getTime();
+        const timerElement = document.getElementById("resend_from_timer");
+
+        const updateTimer = () => {
+            const now = new Date().getTime();
+            const distance = resendSMSFrom - now;
+
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            if (distance > 1) {
+                if (minutes < 10) minutes = `0${minutes}`  // 3 to 03
+                if (seconds < 10) seconds = `0${seconds}` // 3 to 03
+                timerElement.innerHTML = `${minutes}:${seconds}`
+            } else {
+                document.getElementById("resend").disabled = false
+                document.getElementById("resend_from").classList.add("resend_code--disabled")
+                clearInterval(timerInterval);
+            }
+
+        }
+
+        const timerInterval = setInterval(updateTimer, 500);
+        updateTimer();
+    });
+</script>
+{% endblock %}

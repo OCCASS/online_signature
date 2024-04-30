@@ -1,0 +1,8 @@
+.delete_form {
+  padding: 10px 0;
+}
+
+.delete_form__button {
+  background: #bf0f0f;
+  color: white;
+}
