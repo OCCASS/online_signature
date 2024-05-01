@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_twilio",
     "online_signature",
     "admin_panel",
 ]
@@ -138,5 +139,5 @@ CONFIRMATION_CODE_LENGTH = 8
 DOCUMENT_SIGNING_REQUEST_LIFETIME = timedelta(minutes=10)
 DOCUMENT_SIGNING_REQUEST_RESEND_SMS_DELAY = timedelta(minutes=2)
 
-SMSAERO_EMAIL = env("SMSAERO_EMAIL")
-SMSAERO_API_KEY = env("SMSAERO_API_KEY")
+TWILIO_ACCOUNT_SID = env("TWILIO_ACCOUNT_SID")
+TWILIO_AUTH_TOKEN = env("TWILIO_AUTH_TOKEN")

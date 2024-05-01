@@ -4,7 +4,7 @@ import random
 from django.conf import settings
 from django.urls import reverse
 from xhtml2pdf import pisa
-from smsaero import SmsAero
+from django_twilio.client import twilio_client
 from io import BytesIO
 from .models import DocumentSigningRequest, SMS
 
@@ -29,11 +29,15 @@ def send_document_signing_sms(
             document_signing_request.confirmation_code,
         )
     )
-    sms_api = SmsAero(settings.SMSAERO_EMAIL, settings.SMSAERO_API_KEY)
-    send_sms_result = sms_api.send(document_signing_request.phone_number, message)
+    sms_message = twilio_client.messages.create(
+        from_="whatsapp:+14155238886",
+        to="whatsapp:+7" + document_signing_request.phone_number[1:],
+        body=message,
+    )
+    print(dir(sms_message), sms_message.sid)
     sms = SMS(
         message=message,
-        status_code=send_sms_result.get("data", {}).get("status"),
+        status_code=0,
         phone_number=document_signing_request.phone_number,
     )
     sms.save()
