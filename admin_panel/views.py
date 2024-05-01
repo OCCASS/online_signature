@@ -82,14 +82,10 @@ def edit_document(request, id, *args, **kwargs):
         form = forms.EditDocumentForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-
-            if models.Document.objects.filter(name=data["name"]).first():
-                form.add_error("name", "Документ с таким названием уже существует")
-            else:
-                document.name = data["name"]
-                document.template = data["template"]
-                document.save()
-                return redirect(request.path)
+            document.name = data["name"]
+            document.template = data["template"]
+            document.save()
+            return redirect(request.path)
     else:
         form = forms.EditDocumentForm()
 
