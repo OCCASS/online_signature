@@ -23,7 +23,7 @@ def send_document_signing_sms(
     url = reverse("document", kwargs={"id": document_signing_request.id})
     absolute_url = request.build_absolute_uri(url)
     message = (
-        "Hello, this is yout document to sign: %s. Your confirmation code is: %s"
+        "Здравсвуйте, это Ваша ссылка на подписание документа: %s\nВаш код подтверждения: *%s*"
         % (
             absolute_url,
             document_signing_request.confirmation_code,
