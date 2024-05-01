@@ -22,12 +22,9 @@ def send_document_signing_sms(
 ) -> SMS:
     url = reverse("document", kwargs={"id": document_signing_request.id})
     absolute_url = request.build_absolute_uri(url)
-    message = (
-        "Здравствуйте, вот ссылка для подписи документа: %s\nВаш код поддтвержения: %s"
-        % (
-            absolute_url,
-            document_signing_request.confirmation_code,
-        )
+    message = "Hello, link for subscrbing document: %s\nYour confirmation code: %s" % (
+        absolute_url,
+        document_signing_request.confirmation_code,
     )
     sms_api = SmsAero(settings.SMSAERO_EMAIL, settings.SMSAERO_API_KEY)
     send_sms_result = sms_api.send(document_signing_request.phone_number, message)
