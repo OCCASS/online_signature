@@ -4,6 +4,7 @@ import random
 from django.conf import settings
 from django.urls import reverse
 from xhtml2pdf import pisa
+from smsaero import SmsAero
 from io import BytesIO
 from .models import DocumentSigningRequest, SMS
 
@@ -22,15 +23,17 @@ def send_document_signing_sms(
     url = reverse("document", kwargs={"id": document_signing_request.id})
     absolute_url = request.build_absolute_uri(url)
     message = (
-        "Hello, this is your document to sign: %s. Your confirmation code is: %s"
+        "Здравствуйте, вот ссылка для подписи документа: %s\nВаш код поддтвержения: %s"
         % (
             absolute_url,
             document_signing_request.confirmation_code,
         )
     )
+    sms_api = SmsAero(settings.SMSAERO_EMAIL, settings.SMSAERO_API_KEY)
+    send_sms_result = sms_api.send(document_signing_request.phone_number, message)
     sms = SMS(
         message=message,
-        status_code=0,
+        status_code=send_sms_result.get("data", {}).get("status"),
         phone_number=document_signing_request.phone_number,
     )
     sms.save()
