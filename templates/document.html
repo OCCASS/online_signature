@@ -59,13 +59,15 @@
             <form method="POST" class="form">
               {% csrf_token %} 
               <p class="form__row {% if form.confirmation_code.errors %}form__row--error{% endif %}">
-                <input type="text" name="confirmation_code" placeholder="Код из СМС" class="form__input" maxlength="8" required="" id="id_confirmation_code" />
+                  {{ form.confirmation_code }}
                   {% if form.confirmation_code.errors %}
                       <span class="form__error">{{ form.confirmation_code.errors|striptags }}</span>
                   {% endif %}
+                  <!--
                   <a id="resend" disabled href="#" class="resend_code">
                       Отправить снова <span id="resend_from">через <span id="resend_from_timer"></span></span>
                   </a>
+                  -->
               </p>
               <div class="form__footer">
                   <p class="form__footer--description">Заполняя форму, я принимаю условия обработки персональных данных</p>
@@ -79,6 +81,13 @@
 {% block under_body %}
 <script>
     document.addEventListener("DOMContentLoaded", () => {
+        const confirmationCodeInput = document.getElementById("id_confirmation_code")
+        confirmationCodeInput.addEventListener("input", (e) => {
+            if(isNaN(e.data) && e.key !== 'Backspace') {
+                e.target.value = e.target.value.slice(0, -1)
+            }
+        })
+
         const resendSMSFrom = new Date(`{{ document.resend_sms_from.isoformat }}`).getTime();
         const timerElement = document.getElementById("resend_from_timer");
 
@@ -101,8 +110,8 @@
 
         }
 
-        const timerInterval = setInterval(updateTimer, 500);
-        updateTimer();
+        // const timerInterval = setInterval(updateTimer, 500);
+        // updateTimer();
     });
 </script>
 {% endblock %}
