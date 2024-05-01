@@ -1,9 +1,12 @@
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
+from functools import partial
+from nanoid import generate
 from . import utils
 
 import uuid
+
 
 # Create your models here.
 class SMS(models.Model):
@@ -34,7 +37,10 @@ class DocumentSigningRequest(models.Model):
     class Meta:
         db_table = "document_signing_request"
 
-    id = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    id = models.CharField(
+        default=partial(generate, size=12),
+        primary_key=True,
+    )
     phone_number = models.CharField(max_length=20)
     confirmation_code = models.CharField(max_length=8)
     document = models.ForeignKey(Document, on_delete=models.CASCADE)
