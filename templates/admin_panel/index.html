@@ -2,9 +2,28 @@
 {% load static %} 
 
 {% block title %} 
-    Hello world! 
+    Главная
 {% endblock %} 
 
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/admin_panel/index.css' %}" />
+{% endblock %}
+
 {% block content %}
-    <h1>Hello world!</h1>
+    <h1>Главная панели управления</h1>
+    <p>Здесь в панели управления вы можете:</p>
+    <ul>
+        <li>
+            <a href="{% url 'admin_panel_create_document' %}">Создать документ</a>
+        </li>
+            <li>
+            <a href="{% url 'admin_panel_documents' %}">Документы</a>
+        </li>
+        <li>
+            <a href="{% url 'admin_panel_signed_documents' %}">Подписанные документы</a>
+        </li>
+        <li>
+            <a href="{% url 'admin_panel_create_document_signing_requset' %}">Отправить документ на подпись</a>
+        </li>
+    </ul>
 {% endblock %}
