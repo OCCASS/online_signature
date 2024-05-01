@@ -135,7 +135,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_URL = "admin_panel_login"
 LOGOUT_REDIRECT_URL = "admin_panel_login"
 
-CONFIRMATION_CODE_LENGTH = 8
+CONFIRMATION_CODE_LENGTH = 4
 DOCUMENT_SIGNING_REQUEST_LIFETIME = timedelta(minutes=10)
 DOCUMENT_SIGNING_REQUEST_RESEND_SMS_DELAY = timedelta(minutes=2)
 
