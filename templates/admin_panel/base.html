@@ -22,10 +22,7 @@
                   <a href="{% url 'admin_panel_index' %}">Admin</a>
                   {% if user.is_authenticated %}
                       <nav id="header-nav" class="header__content--nav">
-                          <a href="{% url 'admin_panel_create_document' %}">Создать документ</a>
-                          <a href="{% url 'admin_panel_documents' %}">Документы</a>
                           <a href="{% url 'admin_panel_signed_documents' %}">Подписанные документы</a>
-                          <a href="{% url 'admin_panel_create_document_signing_requset' %}">Отправить документ на подпись</a>
                           <a href="{% url 'admin_panel_logout' %}">Выйти</a>
                       </nav>
                       <button id="burger">

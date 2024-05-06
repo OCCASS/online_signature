@@ -15,17 +15,17 @@
             <tr>
                 <th>Название документа</th>
                 <th>Номер телефона</th>
-                <th>Кoд из СМС</th>
-                <th>Подписанный документ</th>
+                <th>Документ</th>
                 <th>Время подписания</th>
+                <th>Время создания</th>
             </tr>
             {% for document in documents %}
                 <tr>
                     <td>{{ document.document.name }}</td>
-                    <td>{{ document.formatted_phone_number }}</td>
-                    <td>{{ document.confirmation_code }}</td>
-                    <td><a href="{{ document.document_file.url }}">Документ</a></td>
-                    <td>{{ document.signed_at|date:"d.m.Y H:i:s" }}</td>
+                    <td>{{ document.phone_number }}</td>
+                    <td> <a target="_blank" href="{{ document.document.file.url }}">Документ</a> </td>
+                    <td>{{ document.signed_at|date:"d.m.Y H:i" }}</td>
+                    <td>{{ document.created_at|date:"d.m.Y H:i" }}</td>
                 </tr>
             {% endfor %}
         </table>

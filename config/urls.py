@@ -22,6 +22,7 @@ urlpatterns = [
     # path("admin/", admin.site.urls),
     path("", include("online_signature.urls")),
     path("admin/", include("admin_panel.urls")),
+    path("api/v1/", include("api.urls")),
 ]
 
 if settings.DEBUG:

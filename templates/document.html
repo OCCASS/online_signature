@@ -13,15 +13,15 @@
         <p>
             Докумнет был успешно подписан кодом 
             <b>
-                {{ document.confirmation_code }}
+                {{ document.code }}
             </b> с телефона 
             <b>
-                {{ document.formatted_phone_number }}
+                {{ document.phone_number }}
             </b>
         </p>
         <p>
             Подписанный договор доступен 
-            <a href="{{ document.document_file.url }}" target="_blank" rel="noopener noreferrer">по ссылке</a>
+            <a href="{{ document.document.file.url }}" target="_blank" rel="noopener noreferrer">по ссылке</a>
         </p>
     {% else %}
         <h1>Документы от {{ document.created_at|date:"d.m.Y" }}</h1>
@@ -32,7 +32,7 @@
                 </svg>
                 <h2 class="section__title">Согласие на электронную подпись</h2>
             </div>
-            <p>Номер телефона: {{ document.formatted_phone_number }}</p>
+            <p>Номер телефона: {{ document.phone_number }}</p>
         </div>
         <div class="section">
             <div class="section__header">
@@ -41,13 +41,13 @@
                   <path d="M12.971 1.816A5.23 5.23 0 0 1 14.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 0 1 3.434 1.279 9.768 9.768 0 0 0-6.963-6.963Z" />
                 </svg>
                 <h2 class="section__title">
-                    <a href="{{ document.document_file.url }}" target="_blank" rel="noopener noreferrer">
+                    <a href="{{ document.document.file.url }}" target="_blank" rel="noopener noreferrer">
                         {{ document.document.name }}
                     </a>
                 </h2>
             </div>
             <p style="padding-bottom: 10px">Ожидает вашей подписи</p>
-            <a href="{{ document.document_file.url }}" target="_blank" rel="noopener noreferrer" role="button">Открыть доукмент</a>
+            <a href="{{ document.document.file.url }}" target="_blank" rel="noopener noreferrer" role="button">Открыть доукмент</a>
         </div>
         <div class="section">
             <div class="section__header">
@@ -88,7 +88,7 @@
             }
         })
 
-        const resendSMSFrom = new Date(`{{ document.resend_sms_from.isoformat }}`).getTime();
+        const resendSMSFrom = new Date(`{{ document.sms.can_resend_at.isoformat }}`).getTime();
         const timerElement = document.getElementById("resend_from_timer");
 
         const updateTimer = () => {

@@ -32,7 +32,9 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = ["chrome-extension://*"]
 
+APPEND_SLASH = False
 
 # Application definition
 
@@ -43,20 +45,30 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
     "django_twilio",
+    "rest_framework",
+    "core",
     "online_signature",
     "admin_panel",
+    "api",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [],
+    "DEFAULT_PERMISSION_CLASSES": [],
+}
 
 ROOT_URLCONF = "config.urls"
 
@@ -138,6 +150,11 @@ LOGOUT_REDIRECT_URL = "admin_panel_login"
 CONFIRMATION_CODE_LENGTH = 4
 DOCUMENT_SIGNING_REQUEST_LIFETIME = timedelta(minutes=10)
 DOCUMENT_SIGNING_REQUEST_RESEND_SMS_DELAY = timedelta(minutes=2)
+DOCUMENT_SIGNING_REQUEST_MAX_ATTEMPTS = 3
 
 TWILIO_ACCOUNT_SID = env("TWILIO_ACCOUNT_SID")
 TWILIO_AUTH_TOKEN = env("TWILIO_AUTH_TOKEN")
+
+PDF_MAKER_HOST = env("PDF_MAKER_HOST")
+
+CORS_ALLOW_CREDENTIALS = True
