@@ -175,6 +175,8 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+DATA_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 10
+
 LOGIN_URL = "admin_panel_login"
 LOGOUT_REDIRECT_URL = "admin_panel_login"
 
